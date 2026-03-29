@@ -15,7 +15,7 @@ const weddingData = {
   couple: "Helena & Ante",
   heroImage: "/helena-ante.jpeg",
   introVideo: "/pressed-love-envelope-52d49bf5.mp4",
-  introPoster: "/intro-poster.jpeg",
+  introPoster: "/intro-poster.jpg",
   musicFile: "/wedding-song.mp3",
   weddingDate: "2026-09-04T17:30:00",
   message:
