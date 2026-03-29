@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   CalendarDays,
   Clock3,
-  Heart,
   MapPin,
   Music4,
   Phone,
@@ -121,12 +120,10 @@ function DetailCard({ icon, title, time, location, address, mapsUrl }) {
 
 export default function App() {
   const [opened, setOpened] = useState(false);
-  const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
 
   const audioRef = useRef(null);
-  const videoRef = useRef(null);
 
   const countdown = useCountdown(weddingData.weddingDate);
 
@@ -139,34 +136,20 @@ export default function App() {
     }
   );
 
-  const playMusic = async () => {
-    if (!audioRef.current) return;
-
-    try {
-      audioRef.current.volume = 0.35;
-      await audioRef.current.play();
-      setAudioPlaying(true);
-      setAudioReady(true);
-    } catch {
-      setAudioReady(true);
-      setAudioPlaying(false);
-    }
-  };
-
   const openInvitation = async () => {
-    setShowIntroVideo(true);
-    await playMusic();
-
-    requestAnimationFrame(async () => {
-      if (!videoRef.current) return;
-
+    if (audioRef.current) {
       try {
-        videoRef.current.currentTime = 0;
-        await videoRef.current.play();
+        audioRef.current.volume = 0.35;
+        await audioRef.current.play();
+        setAudioPlaying(true);
+        setAudioReady(true);
       } catch {
-        setOpened(true);
+        setAudioPlaying(false);
+        setAudioReady(true);
       }
-    });
+    }
+
+    setOpened(true);
   };
 
   const toggleAudio = async () => {
@@ -186,11 +169,6 @@ export default function App() {
     }
   };
 
-  const finishIntro = () => {
-    setOpened(true);
-    setShowIntroVideo(false);
-  };
-
   return (
     <div className="app-shell">
       <audio ref={audioRef} loop preload="auto">
@@ -198,46 +176,7 @@ export default function App() {
       </audio>
 
       <AnimatePresence mode="wait">
-        {!opened && !showIntroVideo ? (
-          <motion.section
-            key="cover"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="cover-screen"
-          >
-            <div className="cover-card">
-              <div className="cover-inner">
-                <p className="cover-eyebrow">Wedding Invitation</p>
-
-                <h1 className="cover-title">{weddingData.couple}</h1>
-
-                <div className="cover-divider">
-                  <span />
-                  <Heart size={14} fill="currentColor" />
-                  <span />
-                </div>
-
-                <p className="cover-invite">Pozivamo vas</p>
-                <p className="cover-subtitle">na naše vjenčanje</p>
-                <p className="cover-date">04. RUJNA 2026.</p>
-
-                <div className="cover-note">
-                  <p className="cover-note-title">Dodirnite za otvaranje</p>
-                  <p className="cover-note-text">
-                    Nakon dodira kreće uvodni video i glazba.
-                  </p>
-                </div>
-              </div>
-
-              <button onClick={openInvitation} className="primary-button">
-                Otvori pozivnicu
-              </button>
-            </div>
-          </motion.section>
-        ) : null}
-
-        {!opened && showIntroVideo ? (
+        {!opened ? (
           <motion.section
             key="intro-video"
             initial={{ opacity: 0 }}
@@ -246,18 +185,21 @@ export default function App() {
             className="intro-video-screen"
           >
             <video
-              ref={videoRef}
               className="intro-video"
+              autoPlay
+              muted
+              loop
               playsInline
               preload="auto"
-              onEnded={finishIntro}
             >
               <source src={weddingData.introVideo} type="video/mp4" />
             </video>
 
-            <button onClick={finishIntro} className="skip-button">
-              Preskoči
-            </button>
+            <div className="intro-overlay">
+              <button onClick={openInvitation} className="primary-button intro-open-button">
+                Otvori pozivnicu
+              </button>
+            </div>
           </motion.section>
         ) : null}
 
