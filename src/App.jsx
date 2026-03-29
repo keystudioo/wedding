@@ -15,7 +15,7 @@ const weddingData = {
   couple: "Helena & Ante",
   heroImage: "/helena-ante.jpeg",
   introVideo: "/pressed-love-envelope-52d49bf5.mp4",
-  introPoster: "/intro-poster.png",
+  introPoster: "/intro-poster.jpeg",
   musicFile: "/wedding-song.mp3",
   weddingDate: "2026-09-04T17:30:00",
   message:
@@ -120,6 +120,7 @@ function DetailCard({ icon, title, time, location, address, mapsUrl }) {
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [introStarted, setIntroStarted] = useState(false);
+  const [videoStarted, setVideoStarted] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
 
@@ -206,14 +207,22 @@ export default function App() {
             <video
               ref={videoRef}
               className="intro-video"
-              poster={weddingData.introPoster}
               muted
               playsInline
               preload="metadata"
+              onPlay={() => setVideoStarted(true)}
               onEnded={finishIntro}
             >
               <source src={weddingData.introVideo} type="video/mp4" />
             </video>
+
+            {!videoStarted ? (
+              <img
+                src={weddingData.introPoster}
+                alt="Invitation preview"
+                className="intro-poster-image"
+              />
+            ) : null}
 
             {!introStarted ? (
               <div className="intro-overlay">
