@@ -75,9 +75,7 @@ function useCountdown(targetDate) {
 function CountdownCard({ label, value }) {
   return (
     <div className="countdown-card">
-      <div className="countdown-value">
-        {String(value).padStart(2, "0")}
-      </div>
+      <div className="countdown-value">{String(value).padStart(2, "0")}</div>
       <div className="countdown-label">{label}</div>
     </div>
   );
@@ -119,14 +117,15 @@ function DetailCard({ icon, title, time, location, address, mapsUrl }) {
 }
 
 export default function App() {
-
   const [opened, setOpened] = useState(false);
-const [introStarted, setIntroStarted] = useState(false);
-const [audioPlaying, setAudioPlaying] = useState(false);
-const [audioReady, setAudioReady] = useState(false);
+  const [introStarted, setIntroStarted] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
 
-const audioRef = useRef(null);
-const videoRef = useRef(null);
+  const audioRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const countdown = useCountdown(weddingData.weddingDate);
 
   const formattedDate = new Date(weddingData.weddingDate).toLocaleDateString(
     "hr-HR",
@@ -137,33 +136,55 @@ const videoRef = useRef(null);
     }
   );
 
-const openInvitation = async () => {
-  if (introStarted) return;
+  const finishIntro = () => {
+    setOpened(true);
+  };
 
-  setIntroStarted(true);
+  const openInvitation = async () => {
+    if (introStarted) return;
 
-  if (audioRef.current) {
+    setIntroStarted(true);
+
+    if (audioRef.current) {
+      try {
+        audioRef.current.volume = 0.35;
+        await audioRef.current.play();
+        setAudioPlaying(true);
+        setAudioReady(true);
+      } catch {
+        setAudioPlaying(false);
+        setAudioReady(true);
+      }
+    }
+
+    if (videoRef.current) {
+      try {
+        videoRef.current.currentTime = 0;
+        await videoRef.current.play();
+      } catch {
+        finishIntro();
+      }
+    } else {
+      finishIntro();
+    }
+  };
+
+  const toggleAudio = async () => {
+    if (!audioRef.current) return;
+
+    if (audioPlaying) {
+      audioRef.current.pause();
+      setAudioPlaying(false);
+      return;
+    }
+
     try {
-      audioRef.current.volume = 0.35;
       await audioRef.current.play();
       setAudioPlaying(true);
-      setAudioReady(true);
     } catch {
       setAudioPlaying(false);
-      setAudioReady(true);
     }
-  }
-
-  if (videoRef.current) {
-    try {
-      videoRef.current.currentTime = 0;
-      await videoRef.current.play();
-    } catch {
-      setOpened(true);
-    }
-  }
-};
-  
+  };
 
   return (
     <div className="app-shell">
@@ -172,35 +193,33 @@ const openInvitation = async () => {
       </audio>
 
       <AnimatePresence mode="wait">
-       {!opened ? (
-  <motion.section
-    key="intro-video"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="intro-video-screen"
-    onClick={openInvitation}
-  >
-    <video
-      ref={videoRef}
-      className="intro-video"
-      muted
-      playsInline
-      preload="auto"
-      onEnded={() => setOpened(true)}
-    >
-      <source src={weddingData.introVideo} type="video/mp4" />
-    </video>
+        {!opened ? (
+          <motion.section
+            key="intro-video"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="intro-video-screen"
+            onClick={openInvitation}
+          >
+            <video
+              ref={videoRef}
+              className="intro-video"
+              muted
+              playsInline
+              preload="auto"
+              onEnded={finishIntro}
+            >
+              <source src={weddingData.introVideo} type="video/mp4" />
+            </video>
 
-    {!introStarted ? (
-      <div className="intro-overlay">
-        <p className="intro-tap-text">Dodirnite za otvaranje</p>
-      </div>
-    ) : null}
-  </motion.section>
-) : null}
-        
-        {opened ? (
+            {!introStarted ? (
+              <div className="intro-overlay">
+                <p className="intro-tap-text">Dodirnite za otvaranje</p>
+              </div>
+            ) : null}
+          </motion.section>
+        ) : (
           <motion.main
             key="main-content"
             initial={{ opacity: 0, y: 18 }}
@@ -332,7 +351,7 @@ const openInvitation = async () => {
               </div>
             </section>
           </motion.main>
-        ) : null}
+        )}
       </AnimatePresence>
     </div>
   );
