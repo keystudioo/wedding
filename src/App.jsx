@@ -172,33 +172,34 @@ const openInvitation = async () => {
       </audio>
 
       <AnimatePresence mode="wait">
-        {!opened ? (
-          <motion.section
-            key="intro-video"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="intro-video-screen"
-          >
-            <video
-              className="intro-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            >
-              <source src={weddingData.introVideo} type="video/mp4" />
-            </video>
+       {!opened ? (
+  <motion.section
+    key="intro-video"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="intro-video-screen"
+    onClick={openInvitation}
+  >
+    <video
+      ref={videoRef}
+      className="intro-video"
+      muted
+      playsInline
+      preload="auto"
+      onEnded={() => setOpened(true)}
+    >
+      <source src={weddingData.introVideo} type="video/mp4" />
+    </video>
 
-            <div className="intro-overlay">
-              <button onClick={openInvitation} className="primary-button intro-open-button">
-                Otvori pozivnicu
-              </button>
-            </div>
-          </motion.section>
-        ) : null}
-
+    {!introStarted ? (
+      <div className="intro-overlay">
+        <p className="intro-tap-text">Dodirnite za otvaranje</p>
+      </div>
+    ) : null}
+  </motion.section>
+) : null}
+        
         {opened ? (
           <motion.main
             key="main-content"
