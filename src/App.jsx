@@ -119,13 +119,14 @@ function DetailCard({ icon, title, time, location, address, mapsUrl }) {
 }
 
 export default function App() {
+
   const [opened, setOpened] = useState(false);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [audioReady, setAudioReady] = useState(false);
+const [introStarted, setIntroStarted] = useState(false);
+const [audioPlaying, setAudioPlaying] = useState(false);
+const [audioReady, setAudioReady] = useState(false);
 
-  const audioRef = useRef(null);
-
-  const countdown = useCountdown(weddingData.weddingDate);
+const audioRef = useRef(null);
+const videoRef = useRef(null);
 
   const formattedDate = new Date(weddingData.weddingDate).toLocaleDateString(
     "hr-HR",
@@ -136,38 +137,33 @@ export default function App() {
     }
   );
 
-  const openInvitation = async () => {
-    if (audioRef.current) {
-      try {
-        audioRef.current.volume = 0.35;
-        await audioRef.current.play();
-        setAudioPlaying(true);
-        setAudioReady(true);
-      } catch {
-        setAudioPlaying(false);
-        setAudioReady(true);
-      }
-    }
+const openInvitation = async () => {
+  if (introStarted) return;
 
-    setOpened(true);
-  };
+  setIntroStarted(true);
 
-  const toggleAudio = async () => {
-    if (!audioRef.current) return;
-
-    if (audioPlaying) {
-      audioRef.current.pause();
-      setAudioPlaying(false);
-      return;
-    }
-
+  if (audioRef.current) {
     try {
+      audioRef.current.volume = 0.35;
       await audioRef.current.play();
       setAudioPlaying(true);
+      setAudioReady(true);
     } catch {
       setAudioPlaying(false);
+      setAudioReady(true);
     }
-  };
+  }
+
+  if (videoRef.current) {
+    try {
+      videoRef.current.currentTime = 0;
+      await videoRef.current.play();
+    } catch {
+      setOpened(true);
+    }
+  }
+};
+  
 
   return (
     <div className="app-shell">
