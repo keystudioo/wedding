@@ -13,7 +13,7 @@ import {
 
 const weddingData = {
   couple: "Helena & Ante",
-  heroImage: "/helena-ante.jpeg",
+  heroImage: "/helena-ante.jpg",
   introVideo: "/pressed-love-envelope-52d49bf5.mp4",
   introPoster: "/intro-poster.jpg",
   musicFile: "/wedding-song.mp3",
