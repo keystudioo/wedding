@@ -13,9 +13,9 @@ import {
 
 const weddingData = {
   couple: "Helena & Ante",
-  heroImage: "/helena-ante.jpg",
+  heroImage: "/helena-ante.jpeg",
   introVideo: "/pressed-love-envelope-52d49bf5.mp4",
-  introPoster: "/intro-poster.jpg",
+  introPoster: "/intro-poster.jpeg",
   musicFile: "/wedding-song.mp3",
   weddingDate: "2026-09-04T17:30:00",
   message:
@@ -44,7 +44,6 @@ const weddingData = {
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Restoran+Gastro+Globus+Avenija+Dubrovnik+15+Zagreb",
   },
-  rsvpDeadlineLabel: "Molimo da svoj dolazak potvrdite do 14. kolovoza 2026.",
   contacts: [
     { name: "Helena", phone: "+385 99 777 1593" },
     { name: "Ante", phone: "+385 99 689 2189" },
@@ -249,8 +248,8 @@ export default function App() {
                 <p className="hero-eyebrow">Pozivnica za vjenčanje</p>
                 <h1 className="hero-title">{weddingData.couple}</h1>
 
-                <div className="hero-date-row">
-                  <CalendarDays size={18} />
+                <div className="hero-date-row hero-date-row-strong">
+                  <CalendarDays size={20} />
                   <span>{formattedDate}</span>
                 </div>
 
@@ -292,10 +291,13 @@ export default function App() {
                   </div>
 
                   <div className="note-card">
-                    <p className="section-eyebrow">Potvrda dolaska</p>
-                    <h3 className="note-title">Važna napomena</h3>
+                    <p className="section-eyebrow">Važna napomena</p>
+                    <h3 className="note-title">Potvrda dolaska</h3>
                     <p className="section-text">
-                      {weddingData.rsvpDeadlineLabel}
+                      Molimo da svoj dolazak potvrdite do{" "}
+                      <span className="rsvp-date-strong">
+                        14. kolovoza 2026.
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -338,7 +340,7 @@ export default function App() {
                 <p className="section-eyebrow">Kontakt</p>
                 <h2 className="section-title">Potvrdite svoj dolazak</h2>
                 <p className="section-text">
-                  Za potvrdu dolaska javite se Heleni ili Anti.
+                  Za potvrdu dolaska javite se na brojeve:
                 </p>
 
                 <div className="contact-grid">
