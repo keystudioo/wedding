@@ -272,34 +272,19 @@ export default function App() {
 
             <section className="container overlap-section">
               <div className="panel">
-                <div className="countdown-layout">
-                  <div>
-                    <p className="section-eyebrow">Odbrojavanje</p>
-                    <h2 className="section-title">
-                      Brojimo dane do našeg vjenčanja
-                    </h2>
-                    <p className="section-text">
-                      Veselimo se što ćete biti dio našeg dana.
-                    </p>
+                <p className="section-eyebrow">Odbrojavanje</p>
+                <h2 className="section-title">
+                  Brojimo dane do našeg vjenčanja
+                </h2>
+                <p className="section-text">
+                  Veselimo se što ćete biti dio našeg dana.
+                </p>
 
-                    <div className="countdown-grid">
-                      <CountdownCard label="Dana" value={countdown.days} />
-                      <CountdownCard label="Sati" value={countdown.hours} />
-                      <CountdownCard label="Min" value={countdown.minutes} />
-                      <CountdownCard label="Sek" value={countdown.seconds} />
-                    </div>
-                  </div>
-
-                  <div className="note-card">
-                    <p className="section-eyebrow">Važna napomena</p>
-                    <h3 className="note-title">Potvrda dolaska</h3>
-                    <p className="section-text">
-                      Molimo da svoj dolazak potvrdite do{" "}
-                      <span className="rsvp-date-strong">
-                        14. kolovoza 2026.
-                      </span>
-                    </p>
-                  </div>
+                <div className="countdown-grid">
+                  <CountdownCard label="Dana" value={countdown.days} />
+                  <CountdownCard label="Sati" value={countdown.hours} />
+                  <CountdownCard label="Min" value={countdown.minutes} />
+                  <CountdownCard label="Sek" value={countdown.seconds} />
                 </div>
               </div>
             </section>
@@ -337,8 +322,12 @@ export default function App() {
 
             <section className="container section-space section-bottom">
               <div className="panel">
-                <p className="section-eyebrow">Kontakt</p>
-                <h2 className="section-title">Potvrdite svoj dolazak</h2>
+                <p className="section-eyebrow">Važna napomena</p>
+                <h2 className="section-title">Potvrda dolaska</h2>
+                <p className="section-text">
+                  Molimo da svoj dolazak potvrdite do{" "}
+                  <span className="rsvp-date-strong">14. kolovoza 2026.</span>
+                </p>
                 <p className="section-text">
                   Za potvrdu dolaska javite se na brojeve:
                 </p>
