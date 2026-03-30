@@ -618,3 +618,21 @@ video {
   height: 100%;
   object-fit: cover;
 }
+
+.hero-date-row-strong {
+  margin-top: 28px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.rsvp-date-strong {
+  font-weight: 700;
+  font-size: 1.08em;
+  color: var(--primary);
+}
